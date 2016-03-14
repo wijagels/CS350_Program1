@@ -1,4 +1,4 @@
-CC=gcc
+#CC=gcc
 CFLAGS=-c -g -Wall -std=c11
 LDFLAGS=
 SOURCES=Main.c
