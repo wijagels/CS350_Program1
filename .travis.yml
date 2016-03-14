@@ -1,2 +1,8 @@
 language: c
-compiler: gcc
+compiler: gcc-4.7
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.7
