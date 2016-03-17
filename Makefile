@@ -1,9 +1,12 @@
-#CC=gcc
-CFLAGS=-c -g -Wall -std=c11
+# Taylor Foxhall
+# Willaim Jagels
+
+CC=gcc
+CFLAGS=-c -g -Wall -Wextra -pedantic -std=c11
 LDFLAGS=
-SOURCES=Main.c
+SOURCES=lab4.c
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=program1
+EXECUTABLE=lab4
 RUN=./$(EXECUTABLE)
 RUNV=valgrind --leak-check=full --track-origins=yes $(RUN)
 RUNS=perf stat $(RUN)
@@ -14,12 +17,12 @@ ccyellow:=$(echo -e "\033[0;33m")
 ccend:=$(shell echo "\033[0m")
 
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) $< -o $@
 
-.cpp.o:
+%.o:%.c
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
