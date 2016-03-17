@@ -35,7 +35,7 @@
 core
 
 # Lab executables
-lab[0-9]*
+lab[0-9]
 
 # Program executables
-program[0-9]*
+program[0-9]
