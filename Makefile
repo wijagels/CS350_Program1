@@ -1,7 +1,7 @@
 # Taylor Foxhall
 # William Jagels
 
-CC=gcc
+#CC=gcc # defining this breaks the build
 CFLAGS=-g -Wall -Wextra -pedantic -std=gnu99
 SRCEXT=c
 HEADEREXT=h
