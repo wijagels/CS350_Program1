@@ -23,7 +23,11 @@
 VRuntime *VRuntime_new(unsigned tlb, unsigned page_size, double locality, unsigned life) {
 
   // Bounds checking
-  if (!sandwich(TLB_MIN, tlb, TLB_MAX) || !sandwich(PAGE_MIN, page_size, PAGE_MAX)) {
+  if (!sandwich(TLB_MIN, tlb, TLB_MAX)) {
+    loge("TLB size invalid, %u <= %u <= %u", TLB_MIN, tlb, TLB_MAX);
+    return NULL;
+  } else if (!sandwich(PAGE_MIN, page_size, PAGE_MAX)) {
+    loge("Page size invalid, 2^%u <= 2^%u <= 2^%u", PAGE_MIN, page_size, PAGE_MAX);
     return NULL;
   }
 

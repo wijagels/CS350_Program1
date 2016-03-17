@@ -1,6 +1,8 @@
 #ifndef _DBG_H
 #define _DBG_H
 
+#include <stdio.h>
+
 #ifdef NDEBUG
 #define logd(message, ...)
 #else
