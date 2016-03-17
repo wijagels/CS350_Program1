@@ -2,7 +2,7 @@
 # William Jagels
 
 #CC=gcc # defining this breaks the build
-CFLAGS=-g -Wall -Wextra -pedantic -std=gnu99
+CFLAGS=-g -Wall -Wextra -pedantic -std=c11
 SRCEXT=c
 HEADEREXT=h
 LDFLAGS=
