@@ -2,7 +2,7 @@
 # Willaim Jagels
 
 CC=gcc
-CFLAGS=-c -g -Wall -Wextra -pedantic -std=c11
+CFLAGS=-c -g -Wall -Wextra -pedantic -std=c99
 LDFLAGS=
 SOURCES=lab4.c
 OBJECTS=$(SOURCES:.c=.o)
