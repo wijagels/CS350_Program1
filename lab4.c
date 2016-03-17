@@ -34,11 +34,17 @@ int main(int argc, char **argv) {
               "-p [locality probability]\n");
       exit(0);
     }
-
-    VRuntime *vruntime = VRuntime_new(t, n, p, l);
-    if (!vruntime) {
-      logd("Invalid vruntime state detected.");
-      exit(1);
-    }
   }
+
+  VRuntime *vruntime = VRuntime_new(t, n, p, l);
+  if (!vruntime) {
+    logd("Invalid vruntime state detected.");
+    exit(1);
+  }
+
+  // Output input file here
+
+  // Cleanup
+  VRuntime_del(vruntime);
+  return 0;
 }

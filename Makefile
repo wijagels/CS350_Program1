@@ -1,11 +1,14 @@
 # Taylor Foxhall
-# Willaim Jagels
+# William Jagels
 
 CC=gcc
-CFLAGS=-c -g -Wall -Wextra -pedantic -std=c99
+CFLAGS=-g -Wall -Wextra -pedantic -std=gnu99
+SRCEXT=c
+HEADEREXT=h
 LDFLAGS=
-SOURCES=lab4.c
-OBJECTS=$(SOURCES:.c=.o)
+SOURCES=$(shell find . -type f -name "*.$(SRCEXT)")
+OBJECTS=$(patsubst %.$(SRCEXT),%.o,$(SOURCES))
+HEADERS=$(shell find . -type f -name "*.$(HEADEREXT)")
 EXECUTABLE=lab4
 RUN=./$(EXECUTABLE)
 RUNV=valgrind --leak-check=full --track-origins=yes $(RUN)
@@ -20,13 +23,15 @@ ccend:=$(shell echo "\033[0m")
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $< -o $@
+	$(CC) $(LDFLAGS) $^ -o $@
 
-%.o:%.c
-	$(CC) $(CFLAGS) $< -o $@
+%.o:%.$(SRCEXT)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
 	-rm $(EXECUTABLE) *.o
 
 test: all
 	$(RUN)
+
+.PHONY: clean
