@@ -36,20 +36,45 @@ VRuntime::VRuntime(unsigned procs, unsigned tlb, unsigned page_size, double loca
 std::ostream& operator<<(std::ostream& os, const VRuntime& vr) {
   std::vector<Process> procs(vr.max_procs);
   std::default_random_engine gen;
-  std::normal_distribution<double> distribution(vr.avg_lifetime, Process::LIFE_VARIANCE);
+  std::normal_distribution<double> lifetime_dist(vr.avg_lifetime, Process::LIFE_VARIANCE);
+  std::bernoulli_distribution local_dist(vr.locality);
 
   // Start the procs
   for (unsigned i = 0; i < vr.max_procs; i++) {
-    unsigned life = std::max(static_cast<unsigned>(distribution(gen)), Process::LIFE_MIN);
+    unsigned life = std::max(static_cast<unsigned>(lifetime_dist(gen)), Process::LIFE_MIN);
     procs[i] = life; // Implicit conversion
     logd("Proc %d: lifetime %u", i, life);
     // TODO paramaterize address space size
     os << "START " << i << " 256\n";
   }
 
+  int finished = 0;
+  int target = 0;
+  while (finished < procs.size()) {
+    if (procs[target].is_alive()) {
+      unsigned next_ref, lower = 0, upper = 256;
+      // Do a locality test
+      if (local_dist(gen)) {
+        // If local, then generate an address within the same page as the last
+        // FIXME
+        unsigned page_num = procs[target].last_addr / vr.page_size;
+        lower = page_num * vr.page_size;
+        upper = lower + vr.page_size;
+      }
+      // Else pick an arbitrary address in the address space
+      next_ref = rand() % (upper - lower) + lower;
+      procs[target].access(next_ref);
+      // TODO Do we want the virtual address or the virtual page number?
+      os << "REFERENCE " << target << " " << next_ref << "\n";
 
-  // TODO
-  // os << "REFERENCE " << page << " " << vpn << "\n"
-  // os << "TERMINATE " << page << "\n"
+      // Kill proc if it's time has come
+      if (!procs[target].is_alive()) {
+        os << "TERMINATE " << target << "\n";
+      }
+    }
+    // TODO Parameterize next process choice, also make less arbitrary
+    target = rand() % procs.size();
+  }
+
   return os;
 }
