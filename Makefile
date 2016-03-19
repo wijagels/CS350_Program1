@@ -1,7 +1,7 @@
 # Taylor Foxhall
 # William Jagels
 
-CXX=g++ # defining this breaks the build
+CXX=g++-4.7 # defining this breaks the build
 CFLAGS=-g -Wall -Wextra -pedantic -std=c++11
 SRCEXT=cpp
 HEADEREXT=hpp
