@@ -47,6 +47,9 @@ std::ostream& operator<<(std::ostream& os, const VRuntime& vr) {
     os << "START " << i << " 256\n";
   }
 
-  
+
+  // TODO
+  // os << "REFERENCE " << page << " " << vpn << "\n"
+  // os << "TERMINATE " << page << "\n"
   return os;
 }
