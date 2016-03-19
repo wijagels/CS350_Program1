@@ -8,15 +8,18 @@
 
 #define sandwich(a, b, c) ((a) <= (b) && (b) <= (c))
 
-typedef struct {
+class VRuntime {
+  public:
+  VRuntime(unsigned tlb, unsigned page_size, double locality, unsigned life);
+
+  private:
   unsigned tlb_size;
   unsigned page_size;
   double locality;
   unsigned avg_lifetime;
-} VRuntime;
+};
+
 
 // VRuntime functions
-VRuntime *VRuntime_new(unsigned, unsigned, double, unsigned);
-void VRuntime_del(VRuntime *);
 
 #endif

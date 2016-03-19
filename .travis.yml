@@ -1,9 +1,10 @@
 sudo: false
-language: c
-compiler: gcc-4.7
+language: cpp
+compiler: g++
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - gcc-4.7
+    - g++-4.7
