@@ -13,16 +13,16 @@ int main(int argc, char **argv) {
   while ((flag = getopt(argc, argv, "ut:n:l:p:")) != -1) {
     switch (flag) {
     case 'n':
-      n = (unsigned) strtoul(optarg, NULL, 10);
+      n = static_cast<unsigned>(strtoul(optarg, NULL, 10));
       break;
     case 't':
-      t = (unsigned) strtoul(optarg, NULL, 10);
+      t = static_cast<unsigned>(strtoul(optarg, NULL, 10));
       break;
     case 'p':
-      p = (double) strtod(optarg, NULL);
+      p = strtod(optarg, NULL);
       break;
     case 'l':
-      l = (unsigned) strtoul(optarg, NULL, 10);
+      l = static_cast<unsigned>(strtoul(optarg, NULL, 10));
       break;
     case 'u':
     case '?':
@@ -34,8 +34,9 @@ int main(int argc, char **argv) {
     }
   }
 
-  VRuntime vruntime{t, n, p, l};
+  VRuntime vruntime{10, t, n, p, l};
   // Output input file here
+  std::cout << vruntime;
 
   // Cleanup
   return 0;

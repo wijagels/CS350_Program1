@@ -1,5 +1,15 @@
 #include "vruntime.hpp"
+#include "debug.h"
 #include <cassert>
+#include <random>
+
+// Process impl
+
+void Process::access(unsigned addr) {
+  assert(is_alive());
+  _age++;
+  _last_addr = addr;
+}
 
 // VRuntime impl
 
@@ -17,8 +27,26 @@
  *  \param avg_lifetime The average amount of time a process will be alive
  *  \return return type
  */
-VRuntime::VRuntime(unsigned tlb, unsigned page_size, double locality, unsigned life):
-  tlb_size{tlb}, page_size{page_size}, locality{locality}, avg_lifetime{life} {
+VRuntime::VRuntime(unsigned procs, unsigned tlb, unsigned page_size, double locality, unsigned life):
+  tlb_size{tlb}, page_size{page_size}, locality{locality}, avg_lifetime{life}, max_procs{procs} {
 
   assert(sandwich(TLB_MIN, tlb, TLB_MAX) && sandwich(PAGE_MIN, page_size, PAGE_MAX));
+}
+
+std::ostream& operator<<(std::ostream& os, const VRuntime& vr) {
+  std::vector<Process> procs(vr.max_procs);
+  std::default_random_engine gen;
+  std::normal_distribution<double> distribution(vr.avg_lifetime, Process::LIFE_VARIANCE);
+
+  // Start the procs
+  for (unsigned i = 0; i < vr.max_procs; i++) {
+    unsigned life = std::max(static_cast<unsigned>(distribution(gen)), Process::LIFE_MIN);
+    procs[i] = life; // Implicit conversion
+    logd("Proc %d: lifetime %u", i, life);
+    // TODO paramaterize address space size
+    os << "START " << i << " 256\n";
+  }
+
+  
+  return os;
 }
