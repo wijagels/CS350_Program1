@@ -1,11 +1,11 @@
 sudo: false
 language: cpp
-compiler: gcc-5.2
+compiler: g++-4.7
 install:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-5.2" CC="gcc-5.2"; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.7" CC="gcc-4.7"; fi
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - g++-5.2
+    - g++-4.7
