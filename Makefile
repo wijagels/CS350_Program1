@@ -33,4 +33,4 @@ clean:
 test: all
 	$(RUN)
 
-.PHONY: cleanPHONY: clean
+.PHONY: clean
