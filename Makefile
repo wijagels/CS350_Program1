@@ -1,7 +1,7 @@
 # Taylor Foxhall
 # William Jagels
 
-CC=g++ # defining this breaks the build
+CXX=g++ # defining this breaks the build
 CFLAGS=-g -Wall -Wextra -pedantic -std=c++11
 SRCEXT=cpp
 HEADEREXT=hpp
@@ -23,10 +23,10 @@ ccend:=$(shell echo "\033[0m")
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $^ -o $@
+	$(CXX) $(LDFLAGS) $^ -o $@
 
 %.o:%.$(SRCEXT)
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CXX) $(CFLAGS) -c -o $@ $<
 
 clean:
 	-rm $(EXECUTABLE) *.o
