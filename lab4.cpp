@@ -1,9 +1,7 @@
 #include "debug.h"
-#include "vruntime.h"
-#include <stdio.h>
-#include <stdbool.h>
+#include "vruntime.hpp"
+#include <iostream>
 #include <unistd.h>
-#include <stdlib.h>
 
 int main(int argc, char **argv) {
 
@@ -30,21 +28,15 @@ int main(int argc, char **argv) {
     case '?':
     default:
       // Just kick out and let main print usage
-      fprintf(stderr, "USAGE: ./lab4 -t [TLB size] -n [page size] -l [process lifetime average]"
-              "-p [locality probability]\n");
+      std::cerr << "USAGE: ./lab4 -t [TLB size] -n [page size] -l [process lifetime average]"
+              "-p [locality probability]\n";
       exit(0);
     }
   }
 
-  VRuntime *vruntime = VRuntime_new(t, n, p, l);
-  if (!vruntime) {
-    logd("Invalid vruntime state detected.");
-    exit(1);
-  }
-
+  VRuntime vruntime{t, n, p, l};
   // Output input file here
 
   // Cleanup
-  VRuntime_del(vruntime);
   return 0;
 }

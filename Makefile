@@ -1,10 +1,10 @@
 # Taylor Foxhall
 # William Jagels
 
-#CC=gcc # defining this breaks the build
-CFLAGS=-g -Wall -Wextra -pedantic -std=gnu11
-SRCEXT=c
-HEADEREXT=h
+CC=g++ # defining this breaks the build
+CFLAGS=-g -Wall -Wextra -pedantic -std=c++11
+SRCEXT=cpp
+HEADEREXT=hpp
 LDFLAGS=
 SOURCES=$(shell find . -type f -name "*.$(SRCEXT)")
 OBJECTS=$(patsubst %.$(SRCEXT),%.o,$(SOURCES))
