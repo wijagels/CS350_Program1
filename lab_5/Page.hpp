@@ -1,4 +1,3 @@
-template <unsigned int page_size>
 class Page {
     public:
         // Constructors
