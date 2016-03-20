@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
 
   // Arg parsing
   char flag;
-  unsigned t = 2048, n = 10, l = 100;
+  unsigned t = 32, n = 10, l = 100;
   double p = 0.5;
 
   while ((flag = getopt(argc, argv, "ut:n:l:p:")) != -1) {
@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
     case '?':
     default:
       // Just kick out and let main print usage
-      std::cerr << "USAGE: ./lab4 -t [TLB size] -n [page size] -l [process lifetime average]"
+      std::cerr << "USAGE: ./lab4 -t [address space size] -n [page size] -l [process lifetime average]"
               "-p [locality probability]\n";
       exit(0);
     }

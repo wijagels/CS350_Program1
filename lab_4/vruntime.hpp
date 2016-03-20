@@ -4,10 +4,10 @@
 #include <iostream>
 #include <vector>
 
-#define TLB_MIN 12
-#define TLB_MAX 4096
 #define PAGE_MIN 5
 #define PAGE_MAX 15
+#define ADDR_MIN 8
+#define ADDR_MAX 64
 
 #define sandwich(a, b, c) ((a) <= (b) && (b) <= (c))
 
@@ -15,31 +15,35 @@ class Process {
   public:
   static const double LIFE_VARIANCE;
   static const unsigned LIFE_MIN;
-  Process() = default;
-  Process(unsigned death): _age{0}, _death_time{death}, _last_addr{0} {}
+  Process(): _id{_next_id++}, _age{0}, _death_time{0}, _last_addr{0} {}
+  Process(const Process&) = default;
+  Process& operator=(const Process&) = default;
+  explicit Process(unsigned death): _id{_next_id++}, _age{0}, _death_time{death}, _last_addr{0} {}
   ~Process() = default;
   inline bool is_alive() { return _age < _death_time; }
-  void access(unsigned);
+  void access(unsigned long long);
+  unsigned last_addr() { return _last_addr; }
+  inline unsigned id() { return _id; }
+
   private:
   unsigned _age;
   unsigned _death_time;
-  unsigned _last_addr;
+  unsigned long long _last_addr;
+  unsigned _id;
+  static unsigned _next_id;
 };
-
-// TODO Parameterize the variance
-const double Process::LIFE_VARIANCE = 40.0;
-const unsigned Process::LIFE_MIN = 10u;
 
 class VRuntime {
   public:
-  VRuntime(unsigned procs, unsigned tlb, unsigned page_size, double locality, unsigned life);
+  VRuntime() = delete;
+  VRuntime(unsigned procs, unsigned addr_size, unsigned page_size, double locality, unsigned life);
   ~VRuntime() = default;
   VRuntime(const VRuntime&) = delete;
   VRuntime& operator=(const VRuntime&) = delete;
   friend std::ostream& operator<<(std::ostream&, const VRuntime&);
 
   private:
-  unsigned tlb_size;
+  unsigned addr_size;
   unsigned page_size;
   double locality;
   unsigned avg_lifetime;
