@@ -7,6 +7,7 @@
 
 // TODO Parameterize the variance
 const double Process::LIFE_VARIANCE = 40.0;
+// TODO Move lifetime bounds to another place
 const unsigned Process::LIFE_MIN = 10u;
 unsigned Process::_next_id = 0;
 
