@@ -2,6 +2,8 @@
 #include "vruntime.hpp"
 #include <iostream>
 #include <unistd.h>
+#include <fstream>
+#include <string>
 
 int main(int argc, char **argv) {
 
@@ -9,20 +11,24 @@ int main(int argc, char **argv) {
   char flag;
   unsigned t = 32, n = 10, l = 100;
   double p = 0.5;
+  std::ofstream test_file;
 
-  while ((flag = getopt(argc, argv, "ut:n:l:p:")) != -1) {
+  while ((flag = getopt(argc, argv, "ut:n:l:p:o:")) != -1) {
     switch (flag) {
     case 'n':
-      n = static_cast<unsigned>(strtoul(optarg, NULL, 10));
+      n = std::stoul(optarg, NULL, 10);
       break;
     case 't':
-      t = static_cast<unsigned>(strtoul(optarg, NULL, 10));
+      t = std::stoul(optarg, NULL, 10);
       break;
     case 'p':
-      p = strtod(optarg, NULL);
+      p = std::stod(optarg, NULL);
       break;
     case 'l':
-      l = static_cast<unsigned>(strtoul(optarg, NULL, 10));
+      l = std::stoul(optarg, NULL, 10);
+      break;
+    case 'o':
+      test_file.open(optarg);
       break;
     case 'u':
     case '?':
@@ -36,7 +42,12 @@ int main(int argc, char **argv) {
 
   VRuntime vruntime{10, t, n, p, l};
   // Output input file here
-  std::cout << vruntime;
+  if (test_file.is_open()) {
+    test_file << vruntime;
+    test_file.close();
+  } else {
+    std::cout << vruntime;
+  }
 
   // Cleanup
   return 0;

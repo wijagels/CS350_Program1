@@ -26,10 +26,10 @@ class Process {
   inline unsigned id() { return _id; }
 
   private:
+  unsigned _id;
   unsigned _age;
   unsigned _death_time;
   unsigned long long _last_addr;
-  unsigned _id;
   static unsigned _next_id;
 };
 
