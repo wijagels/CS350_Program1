@@ -32,6 +32,6 @@ clean:
 	-rm $(EXECUTABLE) *.o
 
 test: all
-	$(RUN)
+	../lab_4/lab4 | $(RUN)
 
 .PHONY: clean
