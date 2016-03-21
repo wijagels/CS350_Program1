@@ -1,7 +1,7 @@
 # Taylor Foxhall
 # William Jagels
 
-CFLAGS=-g -Wall -Wextra -pedantic -std=c++11
+CFLAGS=-g -Wall -Wextra -pedantic -std=c++11 -DNDEBUG
 SRCEXT=cpp
 HEADEREXT=hpp
 LDFLAGS=
