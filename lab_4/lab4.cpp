@@ -9,7 +9,8 @@ int main(int argc, char **argv) {
 
   // Arg parsing
   char flag;
-  unsigned t = 32, n = 10, l = 100;
+  unsigned t = 32, n = 10;
+  int l = 100;
   double p = 0.5;
   std::ofstream test_file;
 
@@ -25,7 +26,7 @@ int main(int argc, char **argv) {
       p = std::stod(optarg, NULL);
       break;
     case 'l':
-      l = std::stoul(optarg, NULL, 10);
+      l = std::stoi(optarg, NULL, 10);
       break;
     case 'o':
       test_file.open(optarg);
