@@ -14,11 +14,11 @@
 class Process {
   public:
   static const double LIFE_VARIANCE;
-  static const unsigned LIFE_MIN;
+  static const int LIFE_MIN;
   Process(): _id{_next_id++}, _age{0}, _death_time{0}, _last_addr{0} {}
   Process(const Process&) = default;
   Process& operator=(const Process&) = default;
-  explicit Process(unsigned death): _id{_next_id++}, _age{0}, _death_time{death}, _last_addr{0} {}
+  explicit Process(int death): _id{_next_id++}, _age{0}, _death_time{death}, _last_addr{0} {}
   ~Process() = default;
   inline bool is_alive() { return _age < _death_time; }
   void access(unsigned long long);
@@ -27,8 +27,8 @@ class Process {
 
   private:
   unsigned _id;
-  unsigned _age;
-  unsigned _death_time;
+  int _age;
+  int _death_time;
   unsigned long long _last_addr;
   static unsigned _next_id;
 };
@@ -36,7 +36,7 @@ class Process {
 class VRuntime {
   public:
   VRuntime() = delete;
-  VRuntime(unsigned procs, unsigned addr_size, unsigned page_size, double locality, unsigned life);
+  VRuntime(unsigned procs, unsigned addr_size, unsigned page_size, double locality, int life);
   ~VRuntime() = default;
   VRuntime(const VRuntime&) = delete;
   VRuntime& operator=(const VRuntime&) = delete;
@@ -46,7 +46,7 @@ class VRuntime {
   unsigned addr_size;
   unsigned page_size;
   double locality;
-  unsigned avg_lifetime;
+  int avg_lifetime;
   unsigned max_procs;
 };
 

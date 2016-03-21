@@ -8,7 +8,7 @@
 // TODO Parameterize the variance
 const double Process::LIFE_VARIANCE = 40.0;
 // TODO Move lifetime bounds to another place
-const unsigned Process::LIFE_MIN = 10u;
+const int Process::LIFE_MIN = 10u;
 unsigned Process::_next_id = 0;
 
 void Process::access(unsigned long long addr) {
@@ -34,7 +34,7 @@ void Process::access(unsigned long long addr) {
  *  \param avg_lifetime The average amount of time a process will be alive
  *  \return return type
  */
-VRuntime::VRuntime(unsigned procs, unsigned addr_size, unsigned page_size, double locality, unsigned life):
+VRuntime::VRuntime(unsigned procs, unsigned addr_size, unsigned page_size, double locality, int life):
   addr_size{addr_size}, page_size{page_size}, locality{locality}, avg_lifetime{life}, max_procs{procs} {
 
   // Play within bounds
@@ -52,7 +52,7 @@ std::ostream& operator<<(std::ostream& os, const VRuntime& vr) {
   std::vector<Process> procs(vr.max_procs);
   // Start the procs
   for (unsigned i = 0; i < vr.max_procs; i++) {
-    unsigned life = std::max(static_cast<unsigned>(lifetime_dist(gen)), Process::LIFE_MIN);
+    int life = std::max(static_cast<int>(lifetime_dist(gen)), Process::LIFE_MIN);
     procs[i] = Process{life};
     logd("Proc %d: lifetime %u", procs[i].id(), life);
     os << "START " << procs[i].id() << " " << ~(-1uLL<<vr.addr_size) << "\n";
