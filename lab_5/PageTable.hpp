@@ -12,41 +12,78 @@ class PageTable {
         PageTable(unsigned int mem_size) : algorithm(this), capacity(mem_size) {
         }
 
+        ~PageTable() {
+            std::cout << "Algorithm: " << algorithm.name
+                << "\nTotal faults: " << faults
+                << "\nTotal accesses: " << accesses
+                << "\nFault percentage: " << (double) 100*faults/accesses
+                << std::endl;
+        }
+
         void add(const Page& p) {
-            if (in_mem >= capacity) {
+            ++accesses;
+            if (table.size() >= capacity) {
+                ++faults;
+                // std::cout << "Page fault on add!" << std::endl;
                 norm_iterator e = algorithm.select_victim();
                 swap.push_back(*e);
                 table.erase(e);
-                --this->in_mem;
             }
             table.push_back(p);
-            ++this->in_mem;
             algorithm.add_hook();
         }
 
-        void access(unsigned int address) {
-            norm_iterator e = std::find_if(table.begin(), table.end(), [address](Page p) {
-                    return p.contains(address);
+        /*
+         * On access, check if the page is in memory
+         * If it's not, then check swap and generate a page fault
+         * If it's also not in swap, then it's a new page that needs to be
+         * created, so send it off to the add function.
+         */
+        void access(unsigned int owner, std::uint64_t number) {
+            ++accesses;
+            norm_iterator e = std::find_if(table.begin(), table.end(), [owner, number](Page p) {
+                    return p.number == number && owner == p.owner;
                     });
             if(e == table.end()) {
-                std::cout << "Page fault!" << std::endl;
-                norm_iterator e = std::find_if(swap.begin(), swap.end(), [address](Page p) {
-                        return p.contains(address);
+                norm_iterator e = std::find_if(swap.begin(), swap.end(), [owner, number](Page p) {
+                        return p.number == number && owner == p.owner;
                         });
+                if (e == swap.end()) {
+                    // The page wasn't created yet
+                    this->add(Page(owner, number));
+                    return;
+                }
+                // std::cout << "Page fault!" << std::endl;
+                ++faults;
                 norm_iterator victim = algorithm.select_victim();
-                std::swap(victim, e);
+                std::iter_swap(victim, e);
                 e = victim;
                 algorithm.access_hook(e);
             }
             else {
-                std::cout << *e;
                 algorithm.access_hook(e);
             }
         }
+
+        /*
+         * Clear memory and swap when processes die
+         */
+        void reap(unsigned int owner) {
+            std::remove_if(table.begin(), table.end(),
+                    [owner](Page p) {
+                    return p.owner == owner;
+                    });
+            std::remove_if(swap.begin(), swap.end(),
+                    [owner](Page p) {
+                    return p.owner == owner;
+                    });
+        }
+
         std::vector<Page> table;
         std::vector<Page> swap;
     private:
         Alg algorithm;
         unsigned int capacity;
-        unsigned int in_mem;
+        std::uint64_t faults = 0;
+        std::uint64_t accesses = 0;
 };

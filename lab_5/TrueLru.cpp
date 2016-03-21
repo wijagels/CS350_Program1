@@ -8,8 +8,8 @@ norm_iterator TrueLru::select_victim() {
             [](Page one, Page two) {
             return one.attrs.front() < two.attrs.front();
             });
-    std::cout << "Selected page..." << std::endl << *e;
-    std::cout << "Last: " << e->attrs.front() << std::endl;
+    // std::cout << "Selected page..." << std::endl << *e;
+    // std::cout << "Last: " << e->attrs.front() << std::endl;
     return e;
 }
 
@@ -19,6 +19,6 @@ void TrueLru::access_hook(norm_iterator e) {
 
 void TrueLru::add_hook() {
     // std::cout << "Add hook caught " << last << std::endl;
-    std::list<int>& attrs = pt->table.back().attrs;
+    std::list<std::uint64_t>& attrs = pt->table.back().attrs;
     attrs.emplace(attrs.begin(), ++last);
 }

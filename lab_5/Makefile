@@ -1,7 +1,6 @@
 # Taylor Foxhall
 # William Jagels
 
-#CC=gcc # defining this breaks the build
 CFLAGS=-g -Wall -Wextra -pedantic -std=gnu11
 CXXFLAGS=-g -Wall -Wextra -pedantic -std=c++11
 SRCEXT=cpp

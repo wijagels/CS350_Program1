@@ -7,15 +7,10 @@ class Page {
     public:
         // Constructors
         Page() {}
-        Page(unsigned int owner, unsigned int start, unsigned int size) : owner(owner), start(start), size(size) {}
-        // Methods
-        bool contains(unsigned int);
+        Page(unsigned int owner, std::uint64_t number) : owner(owner), number(number) {}
         // Public data members
-        bool in_memory = false;
         unsigned int owner = 0;
-        unsigned int frame = 0;
-        unsigned int start = 0;
-        unsigned int size = 0;
-        std::list<int> attrs;
+        std::uint64_t number = 0;
+        std::list<std::uint64_t> attrs;
         friend std::ostream& operator<<(std::ostream&, const Page&);
 };
