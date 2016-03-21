@@ -3,14 +3,13 @@
 #include "PageTable.hpp"
 #include <vector>
 
-class TrueLru {
+class Lfu {
     public:
-        TrueLru(PageTable<TrueLru>* pt) : pt(pt) {}
+        Lfu(PageTable<Lfu>* pt) : pt(pt) {}
         norm_iterator select_victim();
         void access_hook(norm_iterator);
         void add_hook();
-        const std::string name = "Least Recently Used";
+        const std::string name = "Least Frequently Used";
     private:
-        PageTable<TrueLru>* pt;
-        std::uint64_t last = 0;
+        PageTable<Lfu>* pt;
 };
