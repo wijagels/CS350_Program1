@@ -55,7 +55,7 @@ std::ostream& operator<<(std::ostream& os, const VRuntime& vr) {
     int life = std::max(static_cast<int>(lifetime_dist(gen)), Process::LIFE_MIN);
     procs[i] = Process{life};
     logd("Proc %d: lifetime %u", procs[i].id(), life);
-    os << "START " << procs[i].id() << " " << ~(-1uLL<<vr.addr_size) << "\n";
+    os << "START " << procs[i].id() << " " << (1 << (vr.addr_size - vr.page_size)) << "\n";
   }
 
   int last = procs.size() - 1;
