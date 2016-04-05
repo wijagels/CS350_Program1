@@ -6,9 +6,6 @@
 #include <fstream>
 
 const int table_size = 100;
-PageTable<Lfu> lfu(table_size);
-PageTable<Mfu> mfu(table_size);
-PageTable<TrueLru> lru(table_size);
 
 template <typename T>
 void parser(T&);
@@ -17,13 +14,31 @@ int main(int argc, char* argv[]) {
     if(argc == 2) {
         std::ifstream in(argv[1]);
         parser<std::ifstream>(in);
-    } else {
+    } else if (argc == 1) {
+        std::cerr << "No filename given, assuming stdin" << std::endl;
         parser<std::istream>(std::cin);
+    } else {
+        std::cerr << "Unsupported number of arguments, please use either a single filename"
+            << " or nothing to use stdin." << std::endl;
+        return 1;
     }
 }
 
+/*
+ * TODO: make this run async with <future>
+ * My guess is that this would benefit hugely from parallel execution.
+ * Also, it would be better to read the entire input from a stream, then pass
+ * it around as a constant reference to seperate async workers.
+ * This code runs with very high cpu utilization already, so splitting into
+ * threads will likely result in a 3-4x performance boost (on a 4 core cpu).
+ * Also some more efficient page replacement algorithms would be nice,
+ * the current collection is **very** slow.
+ */
 template <typename T>
 void parser(T& stream) {
+    PageTable<Lfu> lfu(table_size);
+    PageTable<Mfu> mfu(table_size);
+    PageTable<TrueLru> lru(table_size);
     std::string cmd;
     unsigned int owner;
     std::uint64_t num;
@@ -33,6 +48,8 @@ void parser(T& stream) {
         stream >> num;
         if (cmd == "START") {
             // K, thx
+            // Seriously though, this command is useless to me.
+            // Pages are allocated when they're referenced
         } else if (cmd == "REFERENCE") {
             lru.access(owner, num);
             lfu.access(owner, num);

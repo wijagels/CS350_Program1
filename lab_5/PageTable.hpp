@@ -9,9 +9,12 @@ typedef std::vector<Page>::iterator norm_iterator;
 template <class Alg>
 class PageTable {
     public:
-        PageTable(unsigned int mem_size) : algorithm(this), capacity(mem_size) {
-        }
+        PageTable(unsigned int mem_size) : algorithm(this), capacity(mem_size) {}
 
+        /*
+         * Print out statistics on destruction
+         * TODO: don't do this, it isn't generic enough.
+         */
         ~PageTable() {
             std::cout << "Algorithm: " << algorithm.name
                 << "\nTotal faults: " << faults
@@ -20,6 +23,11 @@ class PageTable {
                 << std::endl;
         }
 
+        /*
+         * Add a new page into the page table, hopefully into main memory.
+         * If main memory is full, then kick something out of main memory
+         * and insert the new page.
+         */
         void add(const Page& p) {
             ++accesses;
             if (table.size() >= capacity) {
@@ -55,10 +63,16 @@ class PageTable {
                 }
                 // std::cout << "Page fault!" << std::endl;
                 ++faults;
-                norm_iterator victim = algorithm.select_victim();
-                std::iter_swap(victim, e);
-                e = victim;
-                algorithm.access_hook(e);
+                if (table.size() >= capacity) {
+                    norm_iterator victim = algorithm.select_victim();
+                    std::iter_swap(victim, e);
+                    algorithm.access_hook(victim);
+                } else {
+                    // Just dump it on the back of the list
+                    table.push_back(*e);
+                    swap.erase(e);
+                    algorithm.access_hook(table.end()-1);
+                }
             }
             else {
                 algorithm.access_hook(e);
