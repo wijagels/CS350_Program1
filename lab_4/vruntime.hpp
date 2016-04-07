@@ -24,6 +24,8 @@ class Process {
   void access(unsigned long long);
   unsigned last_addr() { return _last_addr; }
   inline unsigned id() { return _id; }
+  // Method will return a stream of addresses for a phase
+  std::vector<unsigned> run();
 
   private:
   unsigned _id;
