@@ -19,6 +19,18 @@ int main(int argc, char **argv) {
   double p = 0.9;
   std::ofstream test_file;
 
+  // User will specify waves, and wave types
+  // The wave type parameters will specify what portion of procs
+  // will have which wave policies
+  // Locality will affect the probability the proc will escape during
+  // the OPEN phase
+  //
+  // Phases for memory:
+  // OPEN - The entire address space is accesible subject to locality
+  // IO - Proc will not access address
+  // HEAVY - Proc will always access many contiguous parts of memory
+  //          at once
+  // NORMAL - Proc will access a local address
 
   while ((flag = getopt(argc, argv, "ut:n:l:p:o:w:")) != -1) {
     switch (flag) {
