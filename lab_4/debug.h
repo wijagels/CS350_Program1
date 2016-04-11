@@ -16,5 +16,6 @@
 #define logw(message, ...) fprintf(stderr, "WARN[%s:%s:%d]: " message "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 #define logi(message, ...) fprintf(stderr, "INFO[%s:%s:%d]: " message "\n", __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
+#define critical(predicate, message, ...) if (predicate) { loge(message, ##__VA_ARGS__); goto error; }
 
 #endif
