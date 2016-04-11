@@ -50,7 +50,7 @@ int Process::run() {
 			case HEAVY:
 				next_ref = rand() % (upper - lower) + lower;
 				// MAGIC
-				for (int j = 0; this->access(next_ref+j*4) &&  j < _phase_length*2; j++);
+				for (unsigned j = 0; this->access(next_ref+j*4) &&  j < _phase_length*2; j++);
 				_policy = static_cast<Policy>(rand() % 3);
 				logd("Process %u switching to policy: %u", _id, _policy);
 				break;
