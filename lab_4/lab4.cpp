@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 	double v = 1.0;
   int l = 100;
 	unsigned w = l;
-  double p = 0.9;
+  double p = 0.5;
   std::ofstream test_file;
 
   // User will specify waves, and wave types

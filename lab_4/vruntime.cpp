@@ -22,7 +22,8 @@ bool Process::access(unsigned long long addr) {
 }
 
 int Process::run() {
-	unsigned long long last_page = this->last_addr() >> _page_size;
+	// ¯\_(ツ)_/¯
+	unsigned long long last_page = this->last_addr();
 	unsigned long long next_ref;
 	unsigned long long lower =
 		std::max(static_cast<unsigned long long>((last_page < LOCAL_REACH ? 0 : last_page-LOCAL_REACH)<<_page_size),
@@ -49,12 +50,14 @@ int Process::run() {
 			case HEAVY:
 				next_ref = rand() % (upper - lower) + lower;
 				// MAGIC
-				for (int j = 0; this->access(next_ref+j) &&  j < 10; j++);
+				for (int j = 0; this->access(next_ref+j*4) &&  j < _phase_length*2; j++);
+				_policy = static_cast<Policy>(rand() % 3);
+				logd("Process %u switching to policy: %u", _id, _policy);
 				break;
 			case IO:
 				next_ref = rand() % (upper - lower) + lower;
 				// MAGIC
-				if (i % 10 == 0) {
+				if (i % 5 == 0) {
 					this->access(next_ref);
 				} else {
 					// Get older anyway, but don't access anything

@@ -22,7 +22,7 @@ class Process {
   static const double LIFE_STDEV;
   static const int LIFE_MIN;
 	static const unsigned ADDRESS_MIN;
-	using Policy = enum { NORMAL, OPEN, HEAVY, IO };
+	using Policy = enum { NORMAL, OPEN, IO, HEAVY };
   Process() = delete;
   Process(const Process&) = default;
 	Process(Process&&) = default;
