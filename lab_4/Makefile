@@ -1,6 +1,8 @@
 # Taylor Foxhall
 # William Jagels
-
+# Together we are: Sarude Dandstorm
+# Please grade whilst the following plays in the background:
+# https://www.youtube.com/watch?v=OOkKX841wsw
 CFLAGS=-g -Wall -Wextra -pedantic -std=c++11 #-DNDEBUG
 SRCEXT=cpp
 HEADEREXT=hpp
