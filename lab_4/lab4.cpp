@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
   //          at once
   // NORMAL - Proc will access a local address
 
-  while ((flag = getopt(argc, argv, "ut:n:l:p:o:w:v:")) != -1) {
+  while ((flag = getopt(argc, argv, "ut:n:l:p:o:w:v:j:")) != -1) {
     switch (flag) {
     case 'n':
       // Page size
@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
     case 'p':
 			// Locality control
       p = std::stod(optarg, NULL);
-			if (0.0 < p && p < 1.0) {
+			if (!(0.0 < p && p < 1.0)) {
 				loge("Locality probability not valid: %f. Must be between 0 and 1", p);
 				exit(1);
 			}
