@@ -119,7 +119,8 @@ std::ostream& operator<<(std::ostream& os, const VRuntime& vr) {
   }
 
   int last = procs.size() - 1;
-	int target = 0; while (last > 0) {
+	int target = 0;
+  while (last >= 0) {
     if (procs[target]->is_alive()) {
 			int refs_made = procs[target]->run();
 			auto history = procs[target]->history();
@@ -134,6 +135,9 @@ std::ostream& operator<<(std::ostream& os, const VRuntime& vr) {
 			}
     }
     // TODO Parameterize next process choice, also make less arbitrary
+    if (last < 0) {
+      break;
+    }
     target = rand() % (last+1);
   }
 
