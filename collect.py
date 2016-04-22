@@ -23,10 +23,9 @@ for i in range(10):
                                      stdin=p1.stdout)
         p2 = p2.decode('ASCII')
         reader = csv.reader(p2.split('\n'), delimiter=',')
-        for row in reader:
-            print(row[3])
-            Z.append(float(row[3]))
-            break
+        reader = list(reader)
+        print(reader[0])
+        Z.append(float(reader[0][3]))
 print(X, Y, Z)
 
 
@@ -53,6 +52,6 @@ ax.set_ylabel('Page table entries')
 ax.set_zlabel('Page fault %')
 
 fig.colorbar(surf, shrink=0.5, aspect=5)
-plt.title('Relationship Between Dankness and Upvotes')
+plt.title('LRU Replacement Strategy')
 
-plt.savefig('out.png')
+plt.savefig('LRU.svg')
