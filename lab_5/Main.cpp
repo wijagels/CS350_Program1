@@ -4,23 +4,38 @@
 #include "Mfu.hpp"
 #include <vector>
 #include <fstream>
+#include <unistd.h>
 
-const int table_size = 100;
+int table_size = 100;
+bool machine_out = false;
 
 template <typename T>
 void parser(T&);
 
 int main(int argc, char* argv[]) {
-    if(argc == 2) {
-        std::ifstream in(argv[1]);
-        parser<std::ifstream>(in);
-    } else if (argc == 1) {
+    char flag;
+    bool usef = false;
+    std::string fname;
+    while ((flag = getopt(argc, argv, "f:s:m")) != -1) {
+        switch(flag) {
+        case 'f':
+            fname = optarg;
+            usef = true;
+            break;
+        case 's':
+            table_size = atoi(optarg);
+            break;
+        case 'm':
+            machine_out = true;
+            break;
+        }
+    }
+    if(!usef) {
         std::cerr << "No filename given, assuming stdin" << std::endl;
         parser<std::istream>(std::cin);
     } else {
-        std::cerr << "Unsupported number of arguments, please use either a single filename"
-            << " or nothing to use stdin." << std::endl;
-        return 1;
+        std::ifstream in(fname);
+        parser<std::ifstream>(in);
     }
 }
 
@@ -63,4 +78,7 @@ void parser(T& stream) {
             exit(1);
         }
     }
+    lru.print_stats(machine_out);
+    lfu.print_stats(machine_out);
+    mfu.print_stats(machine_out);
 }

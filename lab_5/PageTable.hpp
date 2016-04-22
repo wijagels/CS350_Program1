@@ -11,16 +11,18 @@ class PageTable {
     public:
         PageTable(unsigned int mem_size) : algorithm(this), capacity(mem_size) {}
 
-        /*
-         * Print out statistics on destruction
-         * TODO: don't do this, it isn't generic enough.
-         */
-        ~PageTable() {
-            std::cout << "Algorithm: " << algorithm.name
-                << "\nTotal faults: " << faults
-                << "\nTotal accesses: " << accesses
-                << "\nFault percentage: " << (double) 100*faults/accesses
-                << std::endl;
+        void print_stats(bool machine_readable) {
+            if(!machine_readable) {
+                std::cout << "Algorithm: " << algorithm.name
+                    << "\nTotal faults: " << faults
+                    << "\nTotal accesses: " << accesses
+                    << "\nFault percentage: " << (double) 100*faults/accesses
+                    << std::endl;
+            } else {
+                std::cout << algorithm.name << "," << faults
+                    << "," << accesses << "," << (double) 100*faults/accesses
+                    << std::endl;
+            }
         }
 
         /*
