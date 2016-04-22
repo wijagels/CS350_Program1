@@ -14,12 +14,12 @@ void parser(T&);
 
 int main(int argc, char* argv[]) {
     char flag;
-    std::ifstream in;
     bool usef = false;
+    std::string fname;
     while ((flag = getopt(argc, argv, "f:s:m")) != -1) {
         switch(flag) {
         case 'f':
-            in = std::ifstream(optarg);
+            fname = optarg;
             usef = true;
             break;
         case 's':
@@ -34,6 +34,7 @@ int main(int argc, char* argv[]) {
         std::cerr << "No filename given, assuming stdin" << std::endl;
         parser<std::istream>(std::cin);
     } else {
+        std::ifstream in(fname);
         parser<std::ifstream>(in);
     }
 }
